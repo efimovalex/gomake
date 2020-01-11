@@ -1,0 +1,249 @@
+# This is an example goreleaser.yaml file with some sane defaults.
+# Make sure to check the documentation at http://goreleaser.com
+before:
+  hooks:
+    # you may remove this if you don't use vgo
+    - go mod tidy
+    # you may remove this if you don't need go generate
+    - go generate ./...
+builds:
+- binary: gomake
+  goos:
+    - linux
+    - darwin
+    - windows
+  ldflags:
+      - -s -w -X main.BuildVersion={{.Env.VERSION}} -X main.BuildName={{.Env.PACKAGENAME}}
+  goarch:
+    - amd64
+    - 386
+  env:
+  - CGO_ENABLED=0
+archives:
+- replacements:
+    darwin: Darwin
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ .Tag }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+    - '^docs:'
+    - '^test:'
+brews:
+  -
+    name: gomake
+    # GOARM to specify which 32-bit arm version to use if there are multiple versions
+    # from the build section. Brew formulas support atm only one 32-bit version.
+    # Default is 6 for all artifacts or each id if there a multiple versions.
+    goarm: 6
+
+
+    # NOTE: make sure the url_template, the token and given repo (github or gitlab) owner and name are from the
+    # same kind. We will probably unify this in the next major version like it is done with scoop.
+
+    # Github repository to push the tap to.
+    github:
+      owner: efimovalex
+      name: homebrew-gomake
+
+    # Gitea is not supported yet, but the support coming
+    # Template for the url which is determined by the given Token (github or gitlab)
+    # Default for github is "https://github.com/<repo_owner>/<repo_name>/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/efimovalex/gomake/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+
+    # Allows you to set a custom download strategy. Note that you'll need
+    # to implement the strategy and add it to your tap repository.
+    # Example: http://lessthanhero.io/post/homebrew-with-private-repo-releases/
+    # Default is empty.
+    download_strategy: 
+
+    # Allows you to add a custom require_relative at the top of the formula template
+    # Default is empty
+    custom_require: 
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: Alexandru Efimov
+      email: alexandru.efimov@gmail.com
+
+    # Folder inside the repository to put the formula.
+    # Default is the root folder.
+    folder: Formula
+
+    # Caveats for the user of your binary.
+    # Default is empty.
+    caveats: | 
+      Usage: gomake [options] [target] ...
+
+      Options:
+      
+        -f FILE, --file=path/to/file.yml 	Read pointed file as a the targets file.
+        -v, --version 						        Prints the version.
+        -h, --help                    		Prints this message."
+
+    # Your app's homepage.
+    # Default is empty.
+    homepage: "http://github.com/efimovalex/gomake"
+
+    # Your app's description.
+    # Default is empty.
+    description: "Redesign of GNU Make (Makefile) oriented towards project management and command uniformisation among all your projects."
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    skip_upload: false
+
+    # Custom block for brew.
+    # Can be used to specify alternate downloads for devel or head releases.
+    # Default is empty.
+    custom_block: 
+
+    # Packages your package depends on.
+    dependencies:
+      - git
+
+    # Packages that conflict with your package.
+    conflicts:
+
+    # Specify for packages that run as a service.
+    # Default is empty.
+    plist: |
+      <?xml version="1.0" encoding="UTF-8"?>
+
+    # So you can `brew test` your formula.
+    # Default is empty.
+    test: |
+      system "#{bin}/gomake --version"
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "gomake"
+# nfpms:
+#   # note that this is an array of nfpm configs
+#   -
+#     # ID of the nfpm config, must be unique.
+#     # Defaults to "default".
+#     id: gomake
+
+#     # Name of the package.
+#     # Defaults to `ProjectName`.
+#     package_name: gomake
+
+#     # You can change the file name of the package.
+#     # Default: `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
+#     file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+#     # Build IDs for the builds you want to create NFPM packages for.
+#     # Defaults to all builds.
+#     builds:
+#     # Replacements for GOOS and GOARCH in the package name.
+#     # Keys should be valid GOOSs or GOARCHs.
+#     # Values are the respective replacements.
+#     # Default is empty.
+#     replacements:
+#       amd64: 64-bit
+#       386: 32-bit
+#       darwin: macOS
+#       linux: Tux
+
+#     # Your app's vendor.
+#     # Default is empty.
+#     vendor: 
+#     # Your app's homepage.
+#     # Default is empty.
+#     homepage: "http://github.com/efimovalex/gomake"
+
+#     # Your app's maintainer (probably you).
+#     # Default is empty.
+#     maintainer: Alex Efimov <alexandru.efimov@gmail.com>
+
+#     # Your app's description.
+#     # Default is empty.
+#     description: Software to create fast and easy drum rolls.
+
+#     # Your app's license.
+#     # Default is empty.
+#     license: GNU GPL 3.0
+
+#     # Formats to be generated.
+#     formats:
+#       - deb
+#       - rpm
+
+#     # Packages your package depends on.
+#     dependencies:
+#       - git
+
+#     # Packages your package recommends installing.
+#     recommends:
+
+#     # Packages your package suggests installing.
+#     suggests:
+
+#     # Packages that conflict with your package.
+#     conflicts:
+
+#     # Override default /usr/local/bin destination for binaries
+#     bindir: /usr/bin
+
+#     # Package epoch.
+#     # Defaults to empty.
+#     epoch: 1
+
+#     # Empty folders that should be created and managed by the packager
+#     # implementation.
+#     # Default is empty.
+#     empty_folders:
+
+#     # Files to add to your package (beyond the binary).
+#     # Keys are source paths/globs to get the files from.
+#     # Values are the destination locations of the files in the package.
+#     # Use globs to add all contents of a folder.
+#     files:
+
+#     # Config files to add to your package. They are about the same as
+#     # the files keyword, except package managers treat them differently (while
+#     # uninstalling, mostly).
+#     # Keys are source paths/globs to get the files from.
+#     # Values are the destination locations of the files in the package.
+#     config_files:
+
+#     # Scripts to execute during the installation of the package.
+#     # Keys are the possible targets during the installation process
+#     # Values are the paths to the scripts which will be executed
+#     scripts:
+
+#     # Some attributes can be overrided per package format.
+#     overrides:
+#       deb:
+#         dependencies:
+#           - git
+#         suggests:
+#           - gitk
+#         recommends:
+#           - tig
+#         empty_folders:
+#         - /var/log/bar
+#       rpm:
+#         replacements:
+#           amd64: x86_64
+#         name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Arch }}"
+#         files:
+#           "tmp/man.gz": "/usr/share/man/man8/app.8.gz"
+#         config_files:
+#           "tmp/app_generated.conf": "/etc/app-rpm.conf"
+#         scripts:
+#           preinstall: "scripts/preinstall-rpm.sh"
