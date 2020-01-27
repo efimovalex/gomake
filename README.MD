@@ -36,24 +36,30 @@ If you have golang installed (and GOBIN is added to your path):
 go get github.com/efimovalex/gomake
 ```
 
-Linux:
+### Linux:
 
 ```
 wget https://github.com/efimovalex/gomake/releases/download/v1.0.0/gomake_1.0.0_Linux_x86_64.tar.gz
 tar -C /usr/local -xzf gomake_1.0.0_Linux_x86_64.tar.gz
 ```
 
-OS X
+### OS X
 ```
 brew tap efimovalex/gomake
 brew install efimovalex/gomake/gomake
 ```
 
-Microsoft Windows: 
+### Microsoft Windows: 
 
-Download the exe file for your system from the [latest release](https://github.com/efimovalex/gomake/releases/latest)
+Download the exe file for your system from the [latest release](https://github.com/efimovalex/gomake/releases/latest) and unarchive it to your C:\Windows folder in order to be accesible from everywhere in the system.
+You can create an alias to remove de `.exe` ending by running in PowerShell:
 
-## Settings file: makefile.yml
+```
+Set-Alias -Name gomake -Value C:\Windows\gomake.exe
+```
+
+
+## Priject settings file: makefile.yml
 You can provide you own file with the `-file=path/to/makefile.yml`
 
 ### CLI 

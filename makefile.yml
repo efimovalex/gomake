@@ -26,8 +26,6 @@ targets:
         misspell .s
         gocyclo -top=10 .
     release: |
-        git add . 
-        git commit -m "Release $VERSION"
         git tag -a $VERSION -m "Release $VERSION"
         git push origin $VERSION
         goreleaser --rm-dist
