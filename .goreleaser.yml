@@ -7,43 +7,44 @@ before:
     # you may remove this if you don't need go generate
     - go generate ./...
 builds:
-- binary: gomake
-  goos:
-    - linux
-    - darwin
-    - windows
-  ldflags:
+  - binary: gomake
+    goos:
+      - linux
+      - darwin
+      - windows
+    ldflags:
       - -s -w -X main.BuildVersion={{.Env.VERSION}} -X main.BuildName={{.Env.PACKAGENAME}}
-  goarch:
-    - amd64
-    - 386
-  env:
-  - CGO_ENABLED=0
+    goarch:
+      - amd64
+      - 386
+    env:
+      - CGO_ENABLED=0
 archives:
-- replacements:
-    darwin: Darwin
-    linux: Linux
-    windows: Windows
-    386: i386
-    amd64: x86_64
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+    format_overrides:
+      - goos: windows
+        format: zip
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
     exclude:
-    - '^docs:'
-    - '^test:'
+      - "^docs:"
+      - "^test:"
 brews:
-  -
-    name: gomake
+  - name: gomake
     # GOARM to specify which 32-bit arm version to use if there are multiple versions
     # from the build section. Brew formulas support atm only one 32-bit version.
     # Default is 6 for all artifacts or each id if there a multiple versions.
     goarm: 6
-
 
     # NOTE: make sure the url_template, the token and given repo (github or gitlab) owner and name are from the
     # same kind. We will probably unify this in the next major version like it is done with scoop.
@@ -62,11 +63,11 @@ brews:
     # to implement the strategy and add it to your tap repository.
     # Example: http://lessthanhero.io/post/homebrew-with-private-repo-releases/
     # Default is empty.
-    download_strategy: 
+    download_strategy:
 
     # Allows you to add a custom require_relative at the top of the formula template
     # Default is empty
-    custom_require: 
+    custom_require:
 
     # Git author used to commit to the repository.
     # Defaults are shown.
@@ -80,11 +81,11 @@ brews:
 
     # Caveats for the user of your binary.
     # Default is empty.
-    caveats: | 
+    caveats: |
       Usage: gomake [options] [target] ...
 
       Options:
-      
+
         -f FILE, --file=path/to/file.yml 	Read pointed file as a the targets file.
         -v, --version 						        Prints the version.
         -h, --help                    		Prints this message."
@@ -108,7 +109,7 @@ brews:
     # Custom block for brew.
     # Can be used to specify alternate downloads for devel or head releases.
     # Default is empty.
-    custom_block: 
+    custom_block:
 
     # Packages your package depends on.
     dependencies:
@@ -131,6 +132,7 @@ brews:
     # Default is 'bin.install "program"'.
     install: |
       bin.install "gomake"
+
 # nfpms:
 #   # note that this is an array of nfpm configs
 #   -
@@ -161,7 +163,7 @@ brews:
 
 #     # Your app's vendor.
 #     # Default is empty.
-#     vendor: 
+#     vendor:
 #     # Your app's homepage.
 #     # Default is empty.
 #     homepage: "http://github.com/efimovalex/gomake"

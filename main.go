@@ -38,10 +38,6 @@ func main() {
 		fmt.Println("Version: ", BuildVersion)
 		os.Exit(0)
 	}
-	if showHelp || len(os.Args) == 1 {
-		help()
-		os.Exit(0)
-	}
 
 	wantedTarget := os.Args[len(os.Args)-1]
 	if wantedTarget[0:1] == "-" || len(os.Args) == 1 {
@@ -114,6 +110,11 @@ func main() {
 		}
 	}
 
+	if showHelp || len(os.Args) == 1 {
+		helpWithTargets(targets)
+		os.Exit(0)
+	}
+
 	if t, ok := targets[wantedTarget]; !ok {
 		fmt.Printf("no target found for %s\n", wantedTarget)
 		os.Exit(1)
@@ -142,14 +143,28 @@ func main() {
 	os.Exit(0)
 }
 
-// Help shows the detailed command options
 func help() {
+	helpWithTargets(nil)
+}
+
+// Help shows the detailed command options
+func helpWithTargets(targets map[string]interface{}) {
 	fmt.Print(`Usage: gomake [options] [target] ...
 
 Options:
+	-f FILE, --file=path/to/file.yml    Read pointed file as a the targets file.
+	-v, --version                       Prints the version.
+	-h, --help                          Prints this message.
 
-	-f FILE, --file=path/to/file.yml 	Read pointed file as a the targets file.
-	-v, --version 						Prints the version.
-	-h, --help                  		Prints this message.
 `)
+	if len(targets) > 0 {
+		fmt.Println("Targets:")
+		fmt.Println("--------")
+	}
+	for k := range targets {
+		fmt.Println("  ", k)
+	}
+	if len(targets) > 0 {
+		fmt.Println("--------")
+	}
 }

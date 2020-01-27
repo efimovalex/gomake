@@ -45,8 +45,8 @@ tar -C /usr/local -xzf gomake_1.0.0_Linux_x86_64.tar.gz
 
 OS X
 ```
-brew tap alexandru/gomake
-brew install alexandru/gomake/gomake
+brew tap efimovalex/gomake
+brew install efimovalex/gomake/gomake
 ```
 
 Microsoft Windows: 
