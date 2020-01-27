@@ -3,7 +3,13 @@
 ## Redesign of GNU Make (Makefile) oriented towards project management and command uniformisation among all your projects.
 
 When working in an microservice environment with multiple languages and/or frameworks it is sometimes hard to switch between command sets.
-This is why I have created gomake to help better manage running commands between projects:
+This is why I have created gomake to help better manage running commands between projects
+
+## Advantages over GNU Make for project management (not C compiling): 
+ - Works on windows
+ - Bash commands are executed in the same context ( no more single line linked commands - ending in ;\)
+ - Clearer settings file
+ - Uses only the cli you choose, no more Make extras
 
 ## Examples: 
 
