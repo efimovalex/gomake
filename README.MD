@@ -7,8 +7,9 @@ This is why I have created gomake to help better manage running commands between
 
 ## Advantages over GNU Make for project management (not C compiling): 
  - Works on windows
- - Bash commands are executed in the same context ( no more single line linked commands - ending in ;\)
- - Clearer settings file
+ - Bash commands are executed in the same context ( no more single line linked commands - ending in ;\ )
+ - Clearer settings file 
+ - Different declaration of variables and environment variables.
  - Uses only the cli you choose, no more Make extras
 
 ## Examples: 
