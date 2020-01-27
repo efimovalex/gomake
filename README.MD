@@ -117,7 +117,7 @@ gomake build_darwin
 If the target is not found/defined you will get an error message saying: `no target found for {target}`
 
 ### Multi OS
-If you are working in an multi os team, you could define a separate file for windows users and provide that file on windows machines which should contain the same targets but defined as windows commands. 
+If you are working in a multi os team, you could define a separate file for windows users and provide that file on windows machines which should contain the same targets but defined as windows commands. 
 
 ```powershell
 gomake -f makefile_win.yml
