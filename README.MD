@@ -51,7 +51,7 @@ brew install efimovalex/gomake/gomake
 
 ### Microsoft Windows: 
 
-Download the exe file for your system from the [latest release](https://github.com/efimovalex/gomake/releases/latest) and unarchive it to your C:\Windows folder in order to be accesible from everywhere in the system.
+Download the exe file for your system from the [latest release](https://github.com/efimovalex/gomake/releases/latest) and unarchive it to your `C:\Windows` folder in order to be accesible from everywhere in the system.
 You can create an alias to remove de `.exe` ending by running in PowerShell:
 
 ```
@@ -59,7 +59,7 @@ Set-Alias -Name gomake -Value C:\Windows\gomake.exe
 ```
 
 
-## Priject settings file: makefile.yml
+## Project settings file: makefile.yml
 You can provide you own file with the `-file=path/to/makefile.yml`
 
 ### CLI 

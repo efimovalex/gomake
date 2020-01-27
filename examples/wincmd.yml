@@ -1,0 +1,34 @@
+cli: cmd
+vars:
+  buildCmd: go build
+  package_name: gomake.exe
+  package: github.com/efimovalex/gomake
+  GOGET: go get
+env:
+  GO111MODULE: "on"
+  VERSION: "v1.0.0"
+  PACKAGENAME: gomake.exe
+default: clean build
+targets:
+  build: |
+    ${buildCmd} -o ${package_name} .
+  clean: rm ${package_name}
+  deps: |
+    go mod tidy
+    go mod vendor
+  check: |
+    go fmt ${package} 
+    go fix ${package} 
+    go vet ${package}
+    golint .
+    misspell .s
+    gocyclo -top=10 .
+  release: |
+    git tag -a $VERSION -m "Release $VERSION"
+    git push origin $VERSION
+    goreleaser --rm-dist
+  push: |
+    git add . 
+    read -p "commit message? " message
+    git commit -m "${message}"
+    git push origin master

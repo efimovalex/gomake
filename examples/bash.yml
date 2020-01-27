@@ -1,0 +1,36 @@
+cli: bash
+vars:
+  buildCmd: go build -mod vendor -ldflags "-X main.BuildName=${package_name} -X main.BuildVersion=${version}"
+  package_name: gomake
+  package: github.com/efimovalex/gomake
+  GOGET: go get
+env:
+  GO111MODULE: "on"
+  VERSION: "v1.0.0"
+  PACKAGENAME: gomake
+
+default: clean build
+targets:
+  build: |
+    ${buildCmd} -o ${package_name} ${package}
+    go install ${package}
+  clean: rm ./gomake
+  deps: |
+    go mod tidy
+    go mod vendor
+  check: |
+    go fmt ${package} 
+    go fix ${package} 
+    go vet ${package}
+    golint .
+    misspell .s
+    gocyclo -top=10 .
+  release: |
+    git tag -a $VERSION -m "Release $VERSION"
+    git push origin $VERSION
+    goreleaser --rm-dist
+  push: |
+    git add . 
+    read -p "commit message? " message
+    git commit -m "${message}"
+    git push origin master

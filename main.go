@@ -20,6 +20,7 @@ var BuildName string
 
 type cli struct {
 	shell string
+	cli   string
 }
 
 func main() {
@@ -110,7 +111,7 @@ func main() {
 		}
 	}
 
-	if showHelp || len(os.Args) == 1 {
+	if showHelp || (len(os.Args) == 1 && filename != defaultMakefileName) {
 		helpWithTargets(targets)
 		os.Exit(0)
 	}

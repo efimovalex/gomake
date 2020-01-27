@@ -6,15 +6,15 @@ vars:
     GOGET: go get
 env:
     GO111MODULE: "on"
-    VERSION: "v1.0.0"
+    VERSION: "v1.0.1"
     PACKAGENAME: gomake
 
 default: clean build
 targets:
     build: |
         ${buildCmd} -o ${package_name} ${package}
-        go install $package
-    clean: rm gomake_*
+        go install ${package}
+    clean: rm ${package_name}
     deps: |
         go mod tidy
         go mod vendor

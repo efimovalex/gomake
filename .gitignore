@@ -1,4 +1,6 @@
 # Binaries for programs and plugins
+gomake
+*.exe
 
 # Test binary, built with `go test -c`
 *.test

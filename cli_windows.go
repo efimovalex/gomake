@@ -1,33 +1,44 @@
+// +build windows
+
 package main
 
 import (
+	"errors"
 	"os"
 	"os/exec"
 )
 
-var supportedCLIs = []string{
-	"bash", "powershell", "cmd",
+var supportedCLIs = map[string]string{
+	// "bash":       "wsl.exe",
+	"powershell": "powershell.exe",
+	"cmd":        "cmd.exe",
 }
 
 func new(c string) (*cli, error) {
-	ps, err := exec.LookPath(c + ".exe")
-	if err != nil {
-		return nil, err
+	if ci, ok := supportedCLIs[c]; ok {
+		ps, err := exec.LookPath(ci)
+		if err != nil {
+			return nil, err
+		}
+		return &cli{
+			shell: ps,
+			cli:   c,
+		}, nil
 	}
-	return &cli{
-		shell: ps,
-	}, nil
+
+	return nil, errors.New("unsupported cli")
+
 }
 
 func (p *cli) execute(env map[string]string, cmds ...string) (exitCode int, err error) {
-	switch p.shell {
-	case "powershell":
+	if p.cli == "powershell" {
 		cmds = append([]string{"-NoProfile", "-NonInteractive"}, cmds...)
-	case "bash":
-		cmds = append([]string{"-c"}, cmds...)
 	}
-	if p.shell == "powershell" {
-
+	if p.cli == "cmd" {
+		cmds = append([]string{"/C"}, cmds...)
+	}
+	if p.cli == "bash" {
+		cmds = append([]string{"bash", "-c"}, cmds...)
 	}
 
 	cmd := exec.Command(p.shell, cmds...)

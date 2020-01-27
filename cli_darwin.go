@@ -14,6 +14,7 @@ func new(c string) (*cli, error) {
 	}
 	return &cli{
 		shell: ps,
+		cli:   c,
 	}, nil
 }
 
