@@ -1,23 +1,27 @@
 cli: bash
 vars:
-    buildCmd: go build -mod vendor -ldflags "-X main.BuildName=${package_name} -X main.BuildVersion=${version}"
+    buildCmd: go build -mod vendor -ldflags "-X main.BuildName=$PACKAGENAME -X main.BuildVersion=$VERSION"
     package_name: gomake
     package: github.com/efimovalex/gomake
     GOGET: go get
+    version: "v1.0.2"
 env:
     GO111MODULE: "on"
-    VERSION: "v1.0.1"
-    PACKAGENAME: gomake
-
-default: clean build
+    VERSION: ${version}
+    PACKAGENAME: ${package_name}
+default: build
 targets:
-    build: |
+    # builds the binary and installs it in GOBIN
+    build: | 
         ${buildCmd} -o ${package_name} ${package}
         go install ${package}
-    clean: rm ${package_name}
-    deps: |
+    # removes any development artifacts 
+    clean: rm ${package_name} 
+    # resoves and adds dependencies to vendor
+    deps: | 
         go mod tidy
         go mod vendor
+    # various golang code quality checks
     check: |
         go fmt ${package} 
         go fix ${package} 
@@ -25,12 +29,18 @@ targets:
         golint .
         misspell .s
         gocyclo -top=10 .
-    release: |
+    # creates a new release on github & updates brew tap
+    release: | 
         git tag -a $VERSION -m "Release $VERSION"
         git push origin $VERSION
         goreleaser --rm-dist
-    push: |
+    # git shortcut to commit everything
+    push: | 
         git add . 
         read -p "commit message? " message
         git commit -m "${message}"
         git push origin master
+    # test entry
+    test: | 
+        echo "Test"
+        echo "$VERSION"

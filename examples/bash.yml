@@ -8,7 +8,6 @@ env:
   GO111MODULE: "on"
   VERSION: "v1.0.0"
   PACKAGENAME: gomake
-
 default: clean build
 targets:
   build: |
@@ -25,12 +24,3 @@ targets:
     golint .
     misspell .s
     gocyclo -top=10 .
-  release: |
-    git tag -a $VERSION -m "Release $VERSION"
-    git push origin $VERSION
-    goreleaser --rm-dist
-  push: |
-    git add . 
-    read -p "commit message? " message
-    git commit -m "${message}"
-    git push origin master

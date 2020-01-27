@@ -10,7 +10,7 @@ env:
   PACKAGENAME: gomake.exe
 default: clean build
 targets:
-  build: |
+  build: | # seems cmd golang has issues with ldflags, could not get them to work
     ${buildCmd} -o ${package_name} .
   clean: rm ${package_name}
   deps: |
@@ -23,12 +23,3 @@ targets:
     golint .
     misspell .s
     gocyclo -top=10 .
-  release: |
-    git tag -a $VERSION -m "Release $VERSION"
-    git push origin $VERSION
-    goreleaser --rm-dist
-  push: |
-    git add . 
-    read -p "commit message? " message
-    git commit -m "${message}"
-    git push origin master
