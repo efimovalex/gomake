@@ -39,7 +39,7 @@ go get github.com/efimovalex/gomake
 Linux:
 
 ```
-wget https://github.com/efimovalex/gomake/releases/download/v1.0.0/v1.0.0/gomake_1.0.0_Linux_x86_64.tar.gz
+wget https://github.com/efimovalex/gomake/releases/download/v1.0.0/gomake_1.0.0_Linux_x86_64.tar.gz
 tar -C /usr/local -xzf gomake_1.0.0_Linux_x86_64.tar.gz
 ```
 
