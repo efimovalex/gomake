@@ -9,14 +9,13 @@ env:
     GO111MODULE: "on"
     VERSION: ${version}
     PACKAGENAME: ${package_name}
-default: build
 targets:
     # builds the binary and installs it in GOBIN
     build: | 
         ${buildCmd} -o ${package_name} ${package}
         go install ${package}
     # removes any development artifacts 
-    clean: rm ${package_name} 
+    clean: rm -rf ${package_name} coverage.out dist
     # resoves and adds dependencies to vendor
     deps: | 
         go mod tidy
@@ -41,6 +40,6 @@ targets:
         git commit -m "${message}"
         git push origin master
     # test entry
-    test: | 
+    test t: | 
         echo "Test"
         echo "$VERSION"
