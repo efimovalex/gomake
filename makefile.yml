@@ -4,7 +4,7 @@ vars:
     package_name: gomake
     package: github.com/efimovalex/gomake
     GOGET: go get
-    version: "v1.0.2"
+    version: "v1.0.3"
 env:
     GO111MODULE: "on"
     VERSION: ${version}
